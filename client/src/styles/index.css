@@ -1,0 +1,171 @@
+@import '@fontsource/ibm-plex-sans/400.css';
+@import '@fontsource/ibm-plex-sans/500.css';
+@import '@fontsource/ibm-plex-sans/600.css';
+@import '@fontsource/ibm-plex-sans/700.css';
+@import '@fontsource/ibm-plex-mono/500.css';
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/*
+ * "Chalkboard" theme: blackboard green as the institutional primary, chalk-white
+ * text on the dark sidebar, and a single amber highlighter reserved for deadlines
+ * and items needing attention.
+ */
+@layer base {
+  :root {
+    --background: 150 12% 96%;
+    --foreground: 155 18% 11%;
+    --surface: 0 0% 100%;
+    --card: 0 0% 100%;
+    --card-foreground: 155 18% 11%;
+    --popover: 0 0% 100%;
+    --popover-foreground: 155 18% 11%;
+    --primary: 160 55% 27%;
+    --primary-foreground: 60 30% 97%;
+    --primary-soft: 156 38% 92%;
+    --secondary: 150 10% 93%;
+    --secondary-foreground: 155 18% 15%;
+    --muted: 150 10% 94%;
+    --muted-foreground: 155 7% 40%;
+    --accent: 152 18% 92%;
+    --accent-foreground: 155 18% 11%;
+    --highlight: 37 76% 46%;
+    --highlight-soft: 40 85% 92%;
+    --destructive: 0 68% 47%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 150 10% 87%;
+    --input: 150 10% 84%;
+    --ring: 160 55% 32%;
+    --sidebar: 157 30% 11%;
+    --sidebar-foreground: 60 18% 92%;
+    --sidebar-muted: 150 9% 63%;
+    --sidebar-active: 158 26% 19%;
+  }
+
+  .dark {
+    color-scheme: dark;
+    --background: 160 24% 7%;
+    --foreground: 70 14% 90%;
+    --surface: 158 20% 10%;
+    --card: 158 20% 10%;
+    --card-foreground: 70 14% 90%;
+    --popover: 158 20% 11%;
+    --popover-foreground: 70 14% 90%;
+    --primary: 155 45% 50%;
+    --primary-foreground: 160 30% 7%;
+    --primary-soft: 158 30% 16%;
+    --secondary: 158 16% 15%;
+    --secondary-foreground: 70 14% 90%;
+    --muted: 158 16% 13%;
+    --muted-foreground: 150 8% 60%;
+    --accent: 158 16% 16%;
+    --accent-foreground: 70 14% 90%;
+    --highlight: 38 80% 55%;
+    --highlight-soft: 38 50% 16%;
+    --destructive: 0 65% 55%;
+    --destructive-foreground: 0 0% 100%;
+    --border: 158 14% 18%;
+    --input: 158 14% 22%;
+    --ring: 155 45% 50%;
+    --sidebar: 160 26% 5%;
+    --sidebar-foreground: 60 15% 90%;
+    --sidebar-muted: 150 8% 55%;
+    --sidebar-active: 158 22% 13%;
+  }
+
+  * {
+    @apply border-border;
+  }
+  html {
+    -webkit-text-size-adjust: 100%;
+  }
+  body {
+    @apply bg-background text-foreground font-sans text-base antialiased;
+    font-feature-settings: 'tnum' 0;
+  }
+  h1, h2, h3, h4 {
+    @apply font-semibold tracking-tight;
+  }
+  :focus-visible {
+    @apply outline-none ring-2 ring-ring ring-offset-2 ring-offset-background;
+  }
+  table, .tabular {
+    font-variant-numeric: tabular-nums;
+  }
+  @media (prefers-reduced-motion: reduce) {
+    *, *::before, *::after {
+      animation-duration: 0.01ms !important;
+      transition-duration: 0.01ms !important;
+    }
+  }
+}
+
+@layer components {
+  .task-code {
+    @apply font-mono text-xs font-medium text-muted-foreground;
+  }
+  /* Deadline urgency edge: the system's signature cue on rows and cards. */
+  .urgency-edge {
+    @apply relative;
+  }
+  .urgency-edge::before {
+    content: '';
+    @apply absolute left-0 top-1.5 bottom-1.5 w-[3px] rounded-r-sm;
+    background: var(--urgency, transparent);
+  }
+  .prose-dwmt {
+    @apply text-base leading-relaxed text-foreground max-w-[72ch];
+  }
+  .prose-dwmt p { @apply my-2; }
+  .prose-dwmt h1, .prose-dwmt h2, .prose-dwmt h3 { @apply mt-4 mb-2; }
+  .prose-dwmt h1 { @apply text-xl; }
+  .prose-dwmt h2 { @apply text-lg; }
+  .prose-dwmt h3 { @apply text-md; }
+  .prose-dwmt ul { @apply list-disc pl-5 my-2; }
+  .prose-dwmt ol { @apply list-decimal pl-5 my-2; }
+  .prose-dwmt a { @apply text-primary underline underline-offset-2; }
+  .prose-dwmt blockquote { @apply border-l-2 pl-3 text-muted-foreground; }
+  .prose-dwmt code { @apply rounded bg-muted px-1 font-mono text-sm; }
+  .ProseMirror { @apply min-h-[140px] outline-none; }
+  .ProseMirror p.is-editor-empty:first-child::before {
+    content: attr(data-placeholder);
+    @apply pointer-events-none float-left h-0 text-muted-foreground;
+  }
+}
+
+/* FullCalendar themed to tokens */
+.fc {
+  --fc-border-color: hsl(var(--border));
+  --fc-page-bg-color: hsl(var(--surface));
+  --fc-neutral-bg-color: hsl(var(--muted));
+  --fc-list-event-hover-bg-color: hsl(var(--accent));
+  --fc-today-bg-color: hsl(var(--highlight-soft));
+  --fc-button-bg-color: hsl(var(--surface));
+  --fc-button-text-color: hsl(var(--foreground));
+  --fc-button-border-color: hsl(var(--border));
+  --fc-button-hover-bg-color: hsl(var(--accent));
+  --fc-button-hover-border-color: hsl(var(--border));
+  --fc-button-active-bg-color: hsl(var(--primary));
+  --fc-button-active-border-color: hsl(var(--primary));
+  font-size: 0.8125rem;
+}
+.fc .fc-button { @apply rounded-md px-3 py-1 text-sm font-medium shadow-none capitalize; }
+.fc .fc-button-primary:not(:disabled).fc-button-active { color: hsl(var(--primary-foreground)); }
+.fc .fc-toolbar-title { @apply text-lg font-semibold; }
+.fc .fc-event { @apply cursor-pointer rounded-sm border-0 px-1; }
+.fc .fc-col-header-cell-cushion, .fc .fc-daygrid-day-number { @apply text-muted-foreground; }
+.fc .fc-list-day-cushion { background: hsl(var(--muted)); }
+.fc-theme-standard .fc-list { border-color: hsl(var(--border)); }
+
+/* Scrollbars */
+::-webkit-scrollbar { width: 10px; height: 10px; }
+::-webkit-scrollbar-thumb { background: hsl(var(--border)); border-radius: 8px; border: 2px solid transparent; background-clip: content-box; }
+::-webkit-scrollbar-track { background: transparent; }
+
+@media print {
+  aside, header, footer, .no-print { display: none !important; }
+  main { padding: 0 !important; }
+  body { background: white; }
+}

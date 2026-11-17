@@ -1,0 +1,20 @@
+{
+  "name": "dwmt",
+  "version": "1.0.0",
+  "private": true,
+  "description": "Departmental Work Management & Task Tracking System (MERN)",
+  "author": "Yeakob Ali, Lecturer, Dept. of CSE, BAIUST <yeakob.cse@baiust.ac.bd>",
+  "scripts": {
+    "install:all": "npm install && npm --prefix server install && npm --prefix client install",
+    "dev": "concurrently -n server,client -c blue,green \"npm --prefix server run dev\" \"npm --prefix client run dev\"",
+    "seed": "npm --prefix server run seed",
+    "build": "npm --prefix client run build",
+    "start": "npm --prefix server start",
+    "test": "npm --prefix server run check && npm --prefix client run build",
+    "test:smoke": "npm --prefix server run test:smoke",
+    "test:jobs": "npm --prefix server run test:jobs"
+  },
+  "devDependencies": {
+    "concurrently": "^9.1.2"
+  }
+}

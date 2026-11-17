@@ -1,0 +1,12 @@
+node_modules/
+dist/
+dev-dist/
+.env
+.env.local
+server/.env
+server/uploads/
+*.log
+.DS_Store
+.mongodata/
+!.env.example
+!server/.env.example

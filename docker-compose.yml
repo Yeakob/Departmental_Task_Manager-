@@ -1,0 +1,36 @@
+# Production-style stack: MongoDB as a single-node replica set (enables transactions) + DWMT.
+# Usage:  cp server/.env.example .env  (edit secrets)  &&  docker compose up -d --build
+#         docker compose exec app npm run seed            # roles, categories, Super Admin
+services:
+  mongo:
+    image: mongo:7
+    command: ["--replSet", "rs0", "--bind_ip_all"]
+    volumes:
+      - mongo-data:/data/db
+    healthcheck:
+      test: ["CMD", "mongosh", "--quiet", "--eval", "try { rs.status().ok } catch (e) { rs.initiate({_id:'rs0',members:[{_id:0,host:'mongo:27017'}]}).ok }"]
+      interval: 10s
+      timeout: 10s
+      retries: 10
+      start_period: 10s
+    restart: unless-stopped
+
+  app:
+    build: .
+    env_file: .env
+    environment:
+      NODE_ENV: production
+      MONGO_URI: mongodb://mongo:27017/dwmt?replicaSet=rs0
+      CLIENT_URL: ${CLIENT_URL:-http://localhost:5000}
+    ports:
+      - "5000:5000"
+    volumes:
+      - uploads:/app/server/uploads
+    depends_on:
+      mongo:
+        condition: service_healthy
+    restart: unless-stopped
+
+volumes:
+  mongo-data:
+  uploads:
